@@ -61,6 +61,7 @@ func TestProvider(t *testing.T) {
 		lb, err := p.LightBlock(context.Background(), 0)
 		require.NoError(t, err)
 		require.NotNil(t, lb)
+		assert.True(t, lb.Height < 1000)
 		assert.True(t, lb.Height >= 10)
 
 		// let's check this is valid somehow
@@ -79,7 +80,7 @@ func TestProvider(t *testing.T) {
 		lb, err = p.LightBlock(context.Background(), 0)
 		require.NoError(t, err)
 		require.NotNil(t, lb)
-		lb, err = p.LightBlock(context.Background(), lb.Height+100000)
+		lb, err = p.LightBlock(context.Background(), lb.Height+1000)
 		require.Error(t, err)
 		require.Nil(t, lb)
 		assert.Equal(t, provider.ErrHeightTooHigh, err)

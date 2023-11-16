@@ -11,8 +11,8 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"github.com/cometbft/cometbft/internal/protoio"
 	"github.com/cometbft/cometbft/libs/log"
+	"github.com/cometbft/cometbft/libs/protoio"
 	tmp2p "github.com/cometbft/cometbft/proto/tendermint/p2p"
 	"github.com/cometbft/cometbft/proto/tendermint/types"
 )
@@ -503,7 +503,7 @@ func TestMConnectionReadErrorLongMessage(t *testing.T) {
 	protoWriter := protoio.NewDelimitedWriter(client)
 
 	// send msg thats just right
-	packet := tmp2p.PacketMsg{
+	var packet = tmp2p.PacketMsg{
 		ChannelID: 0x01,
 		EOF:       true,
 		Data:      make([]byte, mconnClient.config.MaxPacketMsgPayloadSize),
@@ -566,6 +566,7 @@ func TestMConnectionTrySend(t *testing.T) {
 
 //nolint:lll //ignore line length for tests
 func TestConnVectors(t *testing.T) {
+
 	testCases := []struct {
 		testName string
 		msg      proto.Message
@@ -601,7 +602,7 @@ func TestMConnectionChannelOverflow(t *testing.T) {
 	client := mconnClient.conn
 	protoWriter := protoio.NewDelimitedWriter(client)
 
-	packet := tmp2p.PacketMsg{
+	var packet = tmp2p.PacketMsg{
 		ChannelID: 0x01,
 		EOF:       true,
 		Data:      []byte(`42`),
@@ -614,6 +615,7 @@ func TestMConnectionChannelOverflow(t *testing.T) {
 	_, err = protoWriter.WriteMsg(mustWrapPacket(&packet))
 	require.NoError(t, err)
 	assert.False(t, expectSend(chOnRcv))
+
 }
 
 type stopper interface {

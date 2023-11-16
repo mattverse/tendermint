@@ -10,8 +10,8 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/cometbft/cometbft/crypto/tmhash"
-	"github.com/cometbft/cometbft/internal/protoio"
-	cmtrand "github.com/cometbft/cometbft/internal/rand"
+	"github.com/cometbft/cometbft/libs/protoio"
+	cmtrand "github.com/cometbft/cometbft/libs/rand"
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 )
 
@@ -21,17 +21,15 @@ var (
 )
 
 func init() {
-	stamp, err := time.Parse(TimeFormat, "2018-02-11T07:09:22.765Z")
+	var stamp, err = time.Parse(TimeFormat, "2018-02-11T07:09:22.765Z")
 	if err != nil {
 		panic(err)
 	}
 	testProposal = &Proposal{
 		Height: 12345,
 		Round:  23456,
-		BlockID: BlockID{
-			Hash:          []byte("--June_15_2020_amino_was_removed"),
-			PartSetHeader: PartSetHeader{Total: 111, Hash: []byte("--June_15_2020_amino_was_removed")},
-		},
+		BlockID: BlockID{Hash: []byte("--June_15_2020_amino_was_removed"),
+			PartSetHeader: PartSetHeader{Total: 111, Hash: []byte("--June_15_2020_amino_was_removed")}},
 		POLRound:  -1,
 		Timestamp: stamp,
 	}
@@ -125,6 +123,7 @@ func BenchmarkProposalVerifySignature(b *testing.B) {
 }
 
 func TestProposalValidateBasic(t *testing.T) {
+
 	privVal := NewMockPV()
 	testCases := []struct {
 		testName         string

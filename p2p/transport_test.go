@@ -11,7 +11,7 @@ import (
 	"time"
 
 	"github.com/cometbft/cometbft/crypto/ed25519"
-	"github.com/cometbft/cometbft/internal/protoio"
+	"github.com/cometbft/cometbft/libs/protoio"
 	"github.com/cometbft/cometbft/p2p/conn"
 	tmp2p "github.com/cometbft/cometbft/proto/tendermint/p2p"
 )
@@ -319,11 +319,13 @@ func TestTransportMultiplexAcceptNonBlocking(t *testing.T) {
 	go func() {
 		<-slowc
 
-		dialer := newMultiplexTransport(
-			fastNodeInfo,
-			NodeKey{
-				PrivKey: fastNodePV,
-			},
+		var (
+			dialer = newMultiplexTransport(
+				fastNodeInfo,
+				NodeKey{
+					PrivKey: fastNodePV,
+				},
+			)
 		)
 		addr := NewNetAddress(mt.nodeKey.ID(), mt.listener.Addr())
 
@@ -586,9 +588,10 @@ func TestTransportHandshake(t *testing.T) {
 			}
 		}(c)
 		go func(c net.Conn) {
-
-			// ni   DefaultNodeInfo
-			var pbni tmp2p.DefaultNodeInfo
+			var (
+				// ni   DefaultNodeInfo
+				pbni tmp2p.DefaultNodeInfo
+			)
 
 			protoReader := protoio.NewDelimitedReader(c, MaxNodeInfoSize())
 			_, err := protoReader.ReadMsg(&pbni)

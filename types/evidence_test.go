@@ -10,7 +10,7 @@ import (
 
 	"github.com/cometbft/cometbft/crypto"
 	"github.com/cometbft/cometbft/crypto/tmhash"
-	cmtrand "github.com/cometbft/cometbft/internal/rand"
+	cmtrand "github.com/cometbft/cometbft/libs/rand"
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 	cmtversion "github.com/cometbft/cometbft/proto/tendermint/version"
 	"github.com/cometbft/cometbft/version"
@@ -226,6 +226,7 @@ func TestLightClientAttackEvidenceValidation(t *testing.T) {
 			}
 		})
 	}
+
 }
 
 func TestMockEvidenceValidateBasic(t *testing.T) {

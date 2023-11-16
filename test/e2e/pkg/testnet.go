@@ -68,71 +68,70 @@ const (
 )
 
 // Testnet represents a single testnet.
-// Testnet represents a single testnet.
 type Testnet struct {
-	Name                                                 string
-	File                                                 string
-	Dir                                                  string
-	IP                                                   *net.IPNet
-	InitialHeight                                        int64
-	InitialState                                         map[string]string
-	Validators                                           map[*Node]int64
-	ValidatorUpdates                                     map[int64]map[*Node]int64
-	Nodes                                                []*Node
-	DisablePexReactor                                    bool
-	KeyType                                              string
-	Evidence                                             int
-	LoadTxSizeBytes                                      int
-	LoadTxBatchSize                                      int
-	LoadTxConnections                                    int
-	ABCIProtocol                                         string
-	PrepareProposalDelay                                 time.Duration
-	ProcessProposalDelay                                 time.Duration
-	CheckTxDelay                                         time.Duration
-	VoteExtensionDelay                                   time.Duration
-	FinalizeBlockDelay                                   time.Duration
-	UpgradeVersion                                       string
-	Prometheus                                           bool
-	PexReactor                                           bool
-	LogLevel                                             string
-	VoteExtensionsEnableHeight                           int64
-	VoteExtensionSize                                    uint
-	PeerGossipIntraloopSleepDuration                     time.Duration
-	GossipProtocol                                       string
-	ExperimentalMaxGossipConnectionsToPersistentPeers    uint
-	ExperimentalMaxGossipConnectionsToNonPersistentPeers uint
-	ABCITestsEnabled                                     bool
+	Name                             string
+	File                             string
+	Dir                              string
+	IP                               *net.IPNet
+	InitialHeight                    int64
+	InitialState                     map[string]string
+	Validators                       map[*Node]int64
+	ValidatorUpdates                 map[int64]map[*Node]int64
+	Nodes                            []*Node
+	DisablePexReactor                bool
+	KeyType                          string
+	Evidence                         int
+	LoadTxSizeBytes                  int
+	LoadTxBatchSize                  int
+	LoadTxConnections                int
+	ABCIProtocol                     string
+	PrepareProposalDelay             time.Duration
+	ProcessProposalDelay             time.Duration
+	CheckTxDelay                     time.Duration
+	VoteExtensionDelay               time.Duration
+	FinalizeBlockDelay               time.Duration
+	UpgradeVersion                   string
+	Prometheus                       bool
+	PexReactor                       bool
+	LogLevel                         string
+	VoteExtensionsEnableHeight       int64
+	VoteExtensionSize                uint
+	PeerGossipIntraloopSleepDuration time.Duration
+	GossipProtocol                   string
+	ExperimentalMaxUsedOutboundPeers uint
+	ABCITestsEnabled                 bool
 }
 
 // Node represents a CometBFT node in a testnet.
 type Node struct {
-	Name                    string
-	Version                 string
-	Testnet                 *Testnet
-	Mode                    Mode
-	PrivvalKey              crypto.PrivKey
-	NodeKey                 crypto.PrivKey
-	InternalIP              net.IP
-	ExternalIP              net.IP
-	RPCProxyPort            uint32
-	GRPCProxyPort           uint32
-	GRPCPrivilegedProxyPort uint32
-	StartAt                 int64
-	BlockSyncVersion        string
-	StateSync               bool
-	Database                string
-	ABCIProtocol            Protocol
-	PrivvalProtocol         Protocol
-	PersistInterval         uint64
-	SnapshotInterval        uint64
-	RetainBlocks            uint64
-	EnableCompanionPruning  bool
-	Seeds                   []*Node
-	PersistentPeers         []*Node
-	Perturbations           []Perturbation
-	SendNoLoad              bool
-	Prometheus              bool
-	PrometheusProxyPort     uint32
+	Name                         string
+	Version                      string
+	Testnet                      *Testnet
+	Mode                         Mode
+	PrivvalKey                   crypto.PrivKey
+	NodeKey                      crypto.PrivKey
+	InternalIP                   net.IP
+	ExternalIP                   net.IP
+	RPCProxyPort                 uint32
+	GRPCProxyPort                uint32
+	GRPCPrivilegedProxyPort      uint32
+	StartAt                      int64
+	BlockSyncVersion             string
+	StateSync                    bool
+	Database                     string
+	ABCIProtocol                 Protocol
+	PrivvalProtocol              Protocol
+	PersistInterval              uint64
+	SnapshotInterval             uint64
+	RetainBlocks                 uint64
+	EnableCompanionPruning       bool
+	Seeds                        []*Node
+	PersistentPeers              []*Node
+	Perturbations                []Perturbation
+	SendNoLoad                   bool
+	Prometheus                   bool
+	PrometheusProxyPort          uint32
+	ExperimentalMaxOutboundPeers uint16
 }
 
 // LoadTestnet loads a testnet from a manifest file, using the filename to
@@ -189,9 +188,8 @@ func NewTestnetFromManifest(manifest Manifest, file string, ifd InfrastructureDa
 		VoteExtensionSize:                manifest.VoteExtensionSize,
 		PeerGossipIntraloopSleepDuration: manifest.PeerGossipIntraloopSleepDuration,
 		GossipProtocol:                   manifest.GossipProtocol,
-		ExperimentalMaxGossipConnectionsToPersistentPeers:    manifest.ExperimentalMaxGossipConnectionsToPersistentPeers,
-		ExperimentalMaxGossipConnectionsToNonPersistentPeers: manifest.ExperimentalMaxGossipConnectionsToNonPersistentPeers,
-		ABCITestsEnabled: manifest.ABCITestsEnabled,
+		ExperimentalMaxUsedOutboundPeers: manifest.ExperimentalMaxUsedOutboundPeers,
+		ABCITestsEnabled:                 manifest.ABCITestsEnabled,
 	}
 	if len(manifest.KeyType) != 0 {
 		testnet.KeyType = manifest.KeyType

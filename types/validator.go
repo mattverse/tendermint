@@ -8,7 +8,7 @@ import (
 
 	"github.com/cometbft/cometbft/crypto"
 	ce "github.com/cometbft/cometbft/crypto/encoding"
-	cmtrand "github.com/cometbft/cometbft/internal/rand"
+	cmtrand "github.com/cometbft/cometbft/libs/rand"
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
 )
 
@@ -53,14 +53,14 @@ func (v *Validator) ValidateBasic() error {
 	return nil
 }
 
-// Copy creates a new copy of the validator so we can mutate ProposerPriority.
+// Creates a new copy of the validator so we can mutate ProposerPriority.
 // Panics if the validator is nil.
 func (v *Validator) Copy() *Validator {
 	vCopy := *v
 	return &vCopy
 }
 
-// CompareProposerPriority returns the one with higher ProposerPriority.
+// Returns the one with higher ProposerPriority.
 func (v *Validator) CompareProposerPriority(other *Validator) *Validator {
 	if v == nil {
 		return other
@@ -153,7 +153,7 @@ func (v *Validator) ToProto() (*cmtproto.Validator, error) {
 	return &vp, nil
 }
 
-// ValidatorFromProto sets a protobuf Validator to the given pointer.
+// FromProto sets a protobuf Validator to the given pointer.
 // It returns an error if the public key is invalid.
 func ValidatorFromProto(vp *cmtproto.Validator) (*Validator, error) {
 	if vp == nil {

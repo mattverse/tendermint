@@ -8,10 +8,11 @@ import (
 	"reflect"
 
 	"github.com/cometbft/cometbft/abci/types"
-	cmtnet "github.com/cometbft/cometbft/internal/net"
+	cmtnet "github.com/cometbft/cometbft/libs/net"
 )
 
 func main() {
+
 	conn, err := cmtnet.Connect("unix://test.sock")
 	if err != nil {
 		log.Fatal(err.Error())
@@ -33,7 +34,7 @@ func main() {
 }
 
 func makeRequest(conn io.ReadWriter, req *types.Request) (*types.Response, error) {
-	bufWriter := bufio.NewWriter(conn)
+	var bufWriter = bufio.NewWriter(conn)
 
 	// Write desired request
 	err := types.WriteMessage(req, bufWriter)
@@ -50,12 +51,12 @@ func makeRequest(conn io.ReadWriter, req *types.Request) (*types.Response, error
 	}
 
 	// Read desired response
-	res := &types.Response{}
+	var res = &types.Response{}
 	err = types.ReadMessage(conn, res)
 	if err != nil {
 		return nil, err
 	}
-	resFlush := &types.Response{}
+	var resFlush = &types.Response{}
 	err = types.ReadMessage(conn, resFlush)
 	if err != nil {
 		return nil, err
